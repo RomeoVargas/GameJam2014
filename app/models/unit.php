@@ -5,6 +5,6 @@ class Unit extends AppModel
     {
         $db = DB::conn();
         $units = $db->rows('SELECT * FROM unit');
-        return array($units);
+        return $units;
     }
 }
