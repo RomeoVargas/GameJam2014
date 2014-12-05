@@ -1,6 +1,2 @@
 <?php
-$response = array(
-    'units' => array(
-        $sample_unit
-    )
-);
+$response = array('units' => $units);
