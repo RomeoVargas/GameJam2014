@@ -1,2 +1,2 @@
 <?php
-$response = array('units' => $units);
+$response = array('units' => $player_units);
