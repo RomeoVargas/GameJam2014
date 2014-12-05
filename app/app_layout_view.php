@@ -20,12 +20,15 @@ class AppLayoutView extends View
         } else {
             $view_filename = VIEWS_DIR . $action . self::$ext;
         }
-        $content = self::extractAndMerge($view_filename, $this->vars);
+        self::extractAndMerge($view_filename, $this->vars);
 
         // render layout
-        $layout_filename = VIEWS_DIR . $this->layout . self::$ext;
-        $this->vars['_content_'] = $content;
-        $this->controller->output .= self::extractAndMerge($layout_filename, $this->vars);
+        if ($this->hasError()) {
+            header('HTTP/1.0 500 Internal Server Error');
+        }
+
+        header("Content-Type: application/json; charset=utf-8");
+        $this->controller->output .= json_encode($this->vars['response']);
     }
 
     protected static function extractAndMerge($_filename, &$_vars)
@@ -46,5 +49,10 @@ class AppLayoutView extends View
         $_vars = $vars;
 
         return ob_get_clean();
+    }
+
+    protected function hasError()
+    {
+        return (isset($this->vars['response']['isError']) && $this->vars['response']['isError'] == 1);
     }
 }
