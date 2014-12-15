@@ -18,6 +18,6 @@ class Player extends AppModel
 
     public function getUnitStorage()
     {
-        new UnitStorage($this);
+        return new UnitStorage($this);
     }
 }

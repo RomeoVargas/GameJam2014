@@ -2,7 +2,7 @@
 class AppController extends Controller
 {
     public $default_view_class = 'AppLayoutView';
-    public $player = null;
+    private static $player = null;
 
     public function dispatchAction()
     {
@@ -31,17 +31,11 @@ class AppController extends Controller
 
     public function start()
     {
-        if ($this->player) {
-            return $this->player;
+        if (self::$player) {
+            return self::$player;
         }
         $client_id = Param::get('facebook_connector_id', 'dummy');
-        $this->player = Player::getByClientId($client_id);
-        return $this->player;
-    }
-
-    public function __call($name, $args)
-    {
-        $player = $this->start();
-        $this->set(get_defined_vars());
+        self::$player = Player::getByClientId($client_id);
+        return self::$player;
     }
 }
