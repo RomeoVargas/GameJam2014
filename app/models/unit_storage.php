@@ -10,9 +10,7 @@ class UnitStorage
 
     public function __construct(Player $player)
     {
-        if (is_null($this->player)) {
-            $this->player = $player;
-        }
+        $this->player = $player;
     }
 
     public function getClass($class_id)
