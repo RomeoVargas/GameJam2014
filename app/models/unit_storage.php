@@ -1,5 +1,5 @@
 <?php
-class UnitStorage extends AppModel
+class UnitStorage
 {
     const WARRIOR_CLASS_ID = 1;
     const ARCHER_CLASS_ID = 2;

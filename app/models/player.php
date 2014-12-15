@@ -1,7 +1,6 @@
 <?php
 class Player
 {
-    protected $player = null;
     protected $client_id;
 
     public function getByClientId($client_id)
@@ -21,6 +20,6 @@ class Player
 
     public function getUnitStorage()
     {
-        return new UnitStorage($this->player);
+        return new UnitStorage($this);
     }
 }
