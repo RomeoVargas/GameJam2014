@@ -31,11 +31,12 @@ class AppController extends Controller
 
     public function start()
     {
+        $player = new Player();
         if (!is_null($this->player)) {
             return $this->player;
         }
         $client_id = Param::get('facebook_connector_id', 'dummy');
-        $this->player = Player::getByClientId($client_id);
+        $this->player = $player->getByClientId($client_id);
         return $this->player;
     }
 }

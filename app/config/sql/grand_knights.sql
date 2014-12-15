@@ -54,9 +54,8 @@ CREATE TABLE IF NOT EXISTS player (
 `crystal`         INT(10) UNSIGNED NOT NULL COMMENT 'PURCHASED VIA REAL MONEY',
 `last_login`      DATETIME,
 `created`         DATETIME,
-`updated`         TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-`agree_to_terms`  TINYINT(1) NOT NULL,
-`timezone`        VARCHAR(255),
+`updated`         TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+`stage_setting`,
 PRIMARY KEY (id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -71,8 +70,6 @@ CREATE TABLE IF NOT EXISTS stage_setting (
 id                    INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 level_setting_id      TINYINT(3) NOT NULL,
 part                  TINYINT(3) NOT NULL,
-name                  VARCHAR(255) NOT NULL,
-display_name          VARCHAR(255) NOT NULL,
 PRIMARY KEY (id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
