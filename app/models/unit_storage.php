@@ -6,12 +6,12 @@ class UnitStorage
     const CLERIC_CLASS_ID = 3;
     const MAGE_CLASS_ID = 4;
 
-    private $player = null;
+    private static $player = null;
 
     public function __construct(Player $player)
     {
-        if (is_null($this->player)) {
-            $this->player = $player;
+        if (is_null(self::$player)) {
+            self::$player = $player;
         }
     }
 
@@ -26,7 +26,7 @@ class UnitStorage
     {
         $db = DB::conn();
         $units = array();
-        $rows = $db->rows('SELECT unit_id FROM player_units WHERE player_id = ?', array($this->player->id));
+        $rows = $db->rows('SELECT unit_id FROM player_units WHERE player_id = ?', array(self::$player->id));
         foreach ($rows as $row) {
             $units[] = $this->getUnitById($row['unit_id']);
         }
@@ -37,7 +37,7 @@ class UnitStorage
     {
         $db = DB::conn();
         $unit = $db->row('SELECT * FROM player_units p INNER JOIN unit u ON p.unit_id = u.id WHERE p.player_id = ? AND u.id = ?',
-            array($this->player->id, $unit_id));
+            array(self::$player->id, $unit_id));
         $unit = $this->getUnitStats($unit);
         return new self($unit);
     }
@@ -91,7 +91,7 @@ class UnitStorage
     public function getUnitLeaderId()
     {
         $db = DB::conn();
-        $unit_leader_id = $db->value('SELECT unit_leader_id FROM player WHERE id = ?', array($this->player->id));
+        $unit_leader_id = $db->value('SELECT unit_leader_id FROM player WHERE id = ?', array(self::$player->id));
         return $unit_leader_id;
     }
 
