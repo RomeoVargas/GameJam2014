@@ -1,13 +1,15 @@
 <?php
 class Player
 {
-    protected $client_id;
+    private $client_id;
+    private $unit_storage;
 
     public function getByClientId($client_id)
     {
         $player_id = $this->getPlayerId($client_id);
         $db = DB::conn();
         $player = $db->row('SELECT * FROM player WHERE id = ?', array($player_id));
+        $this->client_id = $client_id;
         return new self($player);
     }
 
@@ -20,6 +22,10 @@ class Player
 
     public function getUnitStorage()
     {
-        return new UnitStorage($this);
+        if ($this->unit_storage) {
+            return $this->unit_storage;
+        }
+        $this->unit_storage = new UnitStorage($this);
+        return $this->unit_storage;
     }
 }
