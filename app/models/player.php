@@ -1,5 +1,5 @@
 <?php
-class Player
+class Player extends AppModel
 {
     private $client_id;
     private $unit_storage;
