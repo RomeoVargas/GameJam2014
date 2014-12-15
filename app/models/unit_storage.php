@@ -6,11 +6,13 @@ class UnitStorage
     const CLERIC_CLASS_ID = 3;
     const MAGE_CLASS_ID = 4;
 
-    protected $player = null;
+    private $player = null;
 
     public function __construct(Player $player)
     {
-        $this->player = $player;
+        if (is_null($this->player)) {
+            $this->player = $player;
+        }
     }
 
     public function getClass($class_id)
@@ -36,8 +38,7 @@ class UnitStorage
         $db = DB::conn();
         $unit = $db->row('SELECT * FROM player_units p INNER JOIN unit u ON p.unit_id = u.id WHERE p.player_id = ? AND u.id = ?',
             array($this->player->id, $unit_id));
-        $unit_stats = $this->getUnitStats($unit);
-        $unit = array_merge($unit, $unit_stats);
+        $unit = $this->getUnitStats($unit);
         return new self($unit);
     }
 
@@ -51,6 +52,7 @@ class UnitStorage
         $unit['atk'] = $this->getAttack($unit);
         $unit['def'] = $this->getDefense($unit['vit']);
         $unit['hp'] =  $this->getHealthPoint($unit['vit'], $unit['current_level']);
+        return $unit;
     }
 
     public function getAttack(array $unit)

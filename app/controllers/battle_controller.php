@@ -3,9 +3,9 @@ class BattleController extends AppController
 {
     public function index()
     {
-        $unit_storage = $player->getUnitStorage();
-        $units = $unit_storage->getAll();
-        $unit_leader_skill = $unit_storage->getUnitLeaderSkill();
+        $player = $this->start();
+        $player_units = $player->getUnitStorage()->getAll();
+        $unit_leader_skill = $player->getUnitStorage()->getUnitLeaderSkill();
         $this->set(get_defined_vars());
     }
 }

@@ -23,12 +23,9 @@ class AppController extends Controller
             }
         }
 
-        $player = $this->start();
-
         // アクションの実行
         $this->{$this->action}();
 
-        $this->set(get_defined_vars());
         $this->render();
     }
 
