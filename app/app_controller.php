@@ -37,6 +37,7 @@ class AppController extends Controller
         }
         $client_id = Param::get('facebook_connector_id', 'dummy');
         $this->player = $player->getByClientId($client_id);
+        apache_note("player_id", $this->player->id);
         return $this->player;
     }
 }
