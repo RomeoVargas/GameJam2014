@@ -2,7 +2,7 @@
 class AppController extends Controller
 {
     public $default_view_class = 'AppLayoutView';
-    private static $player = null;
+    public $player = null;
 
     public function dispatchAction()
     {
@@ -23,19 +23,22 @@ class AppController extends Controller
             }
         }
 
+        $player = $this->start();
+
         // アクションの実行
         $this->{$this->action}();
 
+        $this->set(get_defined_vars());
         $this->render();
     }
 
     public function start()
     {
-        if (self::$player) {
-            return self::$player;
+        if ($this->player) {
+            return $this->player;
         }
         $client_id = Param::get('facebook_connector_id', 'dummy');
-        self::$player = Player::getByClientId($client_id);
-        return self::$player;
+        $this->player = Player::getByClientId($client_id);
+        return $this->player;
     }
 }
