@@ -8,7 +8,7 @@ class Player
     {
         $player_id = $this->getPlayerId($client_id);
         $db = DB::conn();
-        $player = $db->row('SELECT * FROM player WHERE id = ?', $player_id);
+        $player = $db->row('SELECT * FROM player WHERE id = ?', array($player_id));
         return new self($player);
     }
 
