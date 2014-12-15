@@ -18,7 +18,7 @@ class UnitStorage extends AppModel
     public function getClass($class_id)
     {
         $db = DB::conn();
-        $class = $db->row('SELECT * FROM class WHERE id = ?', $class_id);
+        $class = $db->row('SELECT * FROM class WHERE id = ?', array($class_id));
         return new self($class);
     }
 
@@ -26,7 +26,7 @@ class UnitStorage extends AppModel
     {
         $db = DB::conn();
         $units = array();
-        $rows = $db->rows('SELECT unit_id FROM player_units WHERE player_id = ?', $this->player->id);
+        $rows = $db->rows('SELECT unit_id FROM player_units WHERE player_id = ?', array($this->player->id));
         foreach ($rows as $row) {
             $units[] = $this->getUnitById($row['unit_id']);
         }
@@ -91,7 +91,7 @@ class UnitStorage extends AppModel
     public function getUnitLeaderId()
     {
         $db = DB::conn();
-        $unit_leader_id = $db->value('SELECT unit_leader_id FROM player WHERE id = ?', $this->player->id);
+        $unit_leader_id = $db->value('SELECT unit_leader_id FROM player WHERE id = ?', array($this->player->id));
         return $unit_leader_id;
     }
 
@@ -100,7 +100,7 @@ class UnitStorage extends AppModel
         $unit_leader_id = $this->getUnitLeaderId();
         $unit_leader = $this->getUnitById($unit_leader_id);
         $db = DB::conn();
-        $unit_leader_skill = $db->row('SELECT * FROM unit_leader_skill WHERE id = ?', $unit_leader->unit_leader_skill_id);
+        $unit_leader_skill = $db->row('SELECT * FROM unit_leader_skill WHERE id = ?', array($unit_leader->unit_leader_skill_id));
         if (!$unit_leader_skill) {
             return false;
         }

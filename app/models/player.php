@@ -15,7 +15,7 @@ class Player
     protected function getPlayerId($client_id)
     {
         $db = DB::conn();
-        $player_id = $db->value('SELECT player_id FROM player_id_finder WHERE client_id = ?', $client_id);
+        $player_id = $db->value('SELECT player_id FROM player_id_finder WHERE client_id = ?', array($client_id));
         return $player_id;
     }
 
