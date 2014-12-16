@@ -9,6 +9,7 @@ class Unit extends AppModel
     public function __construct($row)
     {
         parent::__construct($row);
+        return new self($row);
     }
 
     public function get($unit_id)
