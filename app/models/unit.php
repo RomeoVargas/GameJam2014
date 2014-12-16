@@ -74,7 +74,7 @@ class Unit extends AppModel
         return $hp;
     }
 
-    public function getLeaderSkill($unit_id)
+    public function getLeaderSkill()
     {
         $db = DB::conn();
         $unit_leader_skill = $db->row('SELECT * FROM unit_leader_skill WHERE id = ?', array($this->unit_leader_skill_id));
