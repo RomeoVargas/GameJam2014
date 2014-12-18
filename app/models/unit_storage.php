@@ -16,7 +16,7 @@ class UnitStorage
         $row = $db->row('SELECT * FROM player_units WHERE player_id = ? AND unit_id = ?', array($this->player->id, $unit_id));
         $row['player'] = $this->player;
         $unit = new Unit($row);
-        return $unit->get($row['unit_id']);
+        return $unit->get($row['unit_id'], $row['current_lvl']);
     }
 
     public function getUnits()
@@ -27,8 +27,7 @@ class UnitStorage
         foreach ($rows as $row) {
             $units[] = $this->getUnit($row['unit_id']);
         }
-        $this->units=$units;
-
+        $this->units = $units;
         return $units;
     }
 

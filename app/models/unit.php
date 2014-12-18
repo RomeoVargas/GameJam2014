@@ -6,17 +6,19 @@ class Unit extends AppModel
     const CLERIC_CLASS_ID = 3;
     const MAGE_CLASS_ID = 4;
 
+    protected $current_lvl;
+    protected $exp_to_go;
+
     public function __construct($row)
     {
         parent::__construct($row);
     }
 
-    public function get($unit_id)
+    public function get($unit_id, $current_lvl)
     {
         $db = DB::conn();
         $unit = $db->row('SELECT * FROM unit WHERE id = ?', array($unit_id));
-        $unit['current_lvl'] = $this->current_lvl;
-        $unit['exp_to_go'] = $this->exp_to_go;
+        $unit['current_lvl'] = $current_lvl;
         $unit = $this->getStats($unit);
         return new self($unit);
     }
@@ -37,7 +39,7 @@ class Unit extends AppModel
         $unit['vit'] = ($unit['vit'] + $unit_class->vit_up_per_lvl) * $unit['current_lvl'];
         $unit['atk'] = $this->getAttack($unit);
         $unit['def'] = $this->getDefense($unit['vit']);
-        $unit['hp'] =  $this->getHealthPoint($unit['vit'], $unit['current_level']);
+        $unit['hp'] =  $this->getHealthPoint($unit['vit'], $unit['current_lvl']);
         return $unit;
     }
 
@@ -58,13 +60,13 @@ class Unit extends AppModel
             default:
                 throw new ClassIdNotFoundException();
         }
-        $attack = ceil(($unit['current_level']/2) + $unit_stats);
+        $attack = ceil(($unit['current_lvl']/2) + $unit_stats);
         return $attack;
     }
 
     public function getDefense($vit)
     {
-        $defense = round(($vit/2) + max(($vit*0.3) * (($vit^2)/150) / 3));
+        $defense = round(($vit/2) + ceil(($vit*0.3) * (($vit^2)/150) / 3));
         return $defense;
     }
 
@@ -81,7 +83,6 @@ class Unit extends AppModel
         if (!$unit_leader_skill) {
             return false;
         }
-        $unit_leader_skill['unit_leader_id'] = $unit_leader_id;
         return $unit_leader_skill;
     }
 
