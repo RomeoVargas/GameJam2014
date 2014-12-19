@@ -44,18 +44,18 @@ INDEX (player_id, unit_id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS player (
-`id`              INT(10) UNSIGNED NOT NULL,
-`name`            VARCHAR(255) NOT NULL,
-`level`           SMALLINT(3) NOT NULL,
-`exp`             INT(10) UNSIGNED NOT NULL,
-`energy`          SMALLINT(3) NOT NULL,
-`unit_leader_id`  INT(10) UNSIGNED NOT NULL,
-`gold`            INT(10) UNSIGNED NOT NULL COMMENT 'DEFAULT GAME CURRENCY',
-`crystal`         INT(10) UNSIGNED NOT NULL COMMENT 'PURCHASED VIA REAL MONEY',
-`last_login`      DATETIME,
-`created`         DATETIME,
-`updated`         TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-`stage_setting`,
+`id`                INT(10) UNSIGNED NOT NULL,
+`name`              VARCHAR(255) NOT NULL,
+`level`             SMALLINT(3) NOT NULL,
+`exp`               INT(10) UNSIGNED NOT NULL,
+`energy`            SMALLINT(3) NOT NULL,
+`unit_leader_id`    INT(10) UNSIGNED NOT NULL,
+`gold`              INT(10) UNSIGNED NOT NULL COMMENT 'DEFAULT GAME CURRENCY',
+`crystal`           INT(10) UNSIGNED NOT NULL COMMENT 'PURCHASED VIA REAL MONEY',
+`last_login`        DATETIME,
+`created`           DATETIME,
+`updated`           TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+`stage_setting_id`  INT(10) UNSIGNED NOT NULL DEFAULT 1,
 PRIMARY KEY (id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS stage_setting (
 id                    INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
 level_setting_id      TINYINT(3) NOT NULL,
 part                  TINYINT(3) NOT NULL,
+unit_ids              VARCHAR(255) NOT NULL,
 PRIMARY KEY (id)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -19,7 +19,7 @@ class UnitStorage
         return $unit->get($row['unit_id'], $row['current_lvl']);
     }
 
-    public function getUnits()
+    public function getPlayerUnits()
     {
         $db = DB::conn();
         $units = array();
@@ -29,6 +29,17 @@ class UnitStorage
         }
         $this->units = $units;
         return $units;
+    }
+
+    public function getEnemyUnits($stage_setting_id)
+    {
+        $db = DB::conn();
+        $enemy_units = array();
+        $enemy_unit_ids = explode(',',$db->value('SELECT unit_ids FROM stage_setting WHERE id = ?', array($stage_setting_id)));
+        foreach ($enemy_unit_ids as $enemy_unit_id) {
+            $enemy_units[] = $this->getUnit($enemy_unit_id);
+        }
+        return $enemy_units;
     }
 
     public function getUnitLeader()
