@@ -15,8 +15,8 @@ class Player extends AppModel
         $player = $db->row('SELECT * FROM player WHERE id = ?', array($player_id));
         $stage_setting = StageSetting::getById($player['stage_setting_id']);
         $level_setting = StageSetting::getLevelSetting($stage_setting->level_setting_id);
-        $player['world_setting_id'] = $level_setting->world_id;
         $player['level_setting_id'] = $level_setting->world_sequence;
+        $player['world_setting_id'] = $level_setting->world_id;
         return new self($player);
     }
 
