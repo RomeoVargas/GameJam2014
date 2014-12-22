@@ -37,7 +37,8 @@ class UnitStorage
         $enemy_units = array();
         $rows = $db->rows('SELECT * FROM enemy_plot_setting WHERE stage_setting_id = ?', array($stage_setting_id));
         foreach ($rows as $row) {
-            $enemy_unit = $this->getUnit($row['unit_id']);
+            $unit = new Unit($row);
+            $enemy_unit = to_array($unit->get($row['unit_id'], $row['current_lvl']));
             $enemy_unit->coordinates = $row['coordinates'];
             $enemy_units[] = $enemy_unit;
         }
