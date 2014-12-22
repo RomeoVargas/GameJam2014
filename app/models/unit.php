@@ -6,9 +6,6 @@ class Unit extends AppModel
     const CLERIC_CLASS_ID = 3;
     const MAGE_CLASS_ID = 4;
 
-    protected $current_lvl;
-    protected $exp_to_go;
-
     public function __construct($row)
     {
         parent::__construct($row);
@@ -18,7 +15,7 @@ class Unit extends AppModel
     {
         $db = DB::conn();
         $unit = $db->row('SELECT * FROM unit WHERE id = ?', array($unit_id));
-        $unit['current_lvl'] = $current_lvl;
+        $unit['current_lvl'] = (int) $current_lvl;
         $unit = $this->getStats($unit);
         return new self($unit);
     }
@@ -33,10 +30,12 @@ class Unit extends AppModel
     public function getStats(array $unit)
     {
         $unit_class = $this->getClass($unit['class_id']);
-        $unit['int'] = ($unit['int'] + $unit_class->int_up_per_lvl) * $unit['current_lvl'];
-        $unit['agi'] = ($unit['agi'] + $unit_class->agi_up_per_lvl) * $unit['current_lvl'];
-        $unit['str'] = ($unit['str'] + $unit_class->str_up_per_lvl) * $unit['current_lvl'];
-        $unit['vit'] = ($unit['vit'] + $unit_class->vit_up_per_lvl) * $unit['current_lvl'];
+        if ($unit['current_lvl'] > 1) {
+            $unit['int'] = ($unit['int'] + $unit_class->int_up_per_lvl) * $unit['current_lvl'];
+            $unit['agi'] = ($unit['agi'] + $unit_class->agi_up_per_lvl) * $unit['current_lvl'];
+            $unit['str'] = ($unit['str'] + $unit_class->str_up_per_lvl) * $unit['current_lvl'];
+            $unit['vit'] = ($unit['vit'] + $unit_class->vit_up_per_lvl) * $unit['current_lvl'];
+        }
         $unit['atk'] = $this->getAttack($unit);
         $unit['def'] = $this->getDefense($unit['vit']);
         $unit['hp'] =  $this->getHealthPoint($unit['vit'], $unit['current_lvl']);

@@ -35,9 +35,11 @@ class UnitStorage
     {
         $db = DB::conn();
         $enemy_units = array();
-        $enemy_unit_ids = explode(',',$db->value('SELECT unit_ids FROM stage_setting WHERE id = ?', array($stage_setting_id)));
-        foreach ($enemy_unit_ids as $enemy_unit_id) {
-            $enemy_units[] = $this->getUnit($enemy_unit_id);
+        $rows = $db->rows('SELECT * FROM enemy_plot_setting WHERE stage_setting_id = ?', array($stage_setting_id));
+        foreach ($rows as $row) {
+            $enemy_unit = $this->getUnit($row['unit_id']);
+            $enemy_unit->coordinates = $row['coordinates'];
+            $enemy_units[] = $enemy_unit;
         }
         return $enemy_units;
     }

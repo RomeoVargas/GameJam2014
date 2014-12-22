@@ -20,9 +20,4 @@ class Player extends AppModel
     {
         return new UnitStorage($this);
     }
-
-    public function getStageSetting()
-    {
-        return new StageSetting($this);
-    }
 }
