@@ -15,4 +15,18 @@ class StageSetting extends AppModel
         $level_setting_id = $db->value('SELECT id FROM level_setting WHERE world_id = ? AND world_sequence = ?', array($world_id, $world_sequence));
         return $level_setting_id;
     }
+
+    public static function getById($stage_setting_id)
+    {
+        $db = DB::conn();
+        $stage_setting = $db->row('SELECT * FROM stage_setting WHERE stage_setting_id = ?', array($stage_setting_id));
+        return new self($stage_setting);
+    }
+
+    public static function getLevelSetting($level_setting_id)
+    {
+        $db = DB::conn();
+        $level_setting = $db->row('SELECT * FROM level_setting WHERE level_setting_id = ?', array($level_setting_id));
+        return new self($level_setting);
+    }
 }
