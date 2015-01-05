@@ -1,7 +1,7 @@
 <?php
 $response = array(
-    'player' => to_array($player),
-    'units' => $player_units,
-    'unit_leader_skill' => $active_leader_skill,
-    'enemy_units' => $enemy_units
+    'world'    => $current_stage_info,
+    'player'                => $player,
+    'unit_leader_skill'     => $active_leader_skill,
+    'units'                 => $player_units
 );

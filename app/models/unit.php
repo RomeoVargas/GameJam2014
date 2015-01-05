@@ -1,10 +1,10 @@
 <?php
 class Unit extends AppModel
 {
-    const WARRIOR_CLASS_ID = 1;
-    const ARCHER_CLASS_ID = 2;
-    const CLERIC_CLASS_ID = 3;
-    const MAGE_CLASS_ID = 4;
+    const CLASS_WARRIOR = 'Warrior';
+    const CLASS_ARCHER = 'Archer';
+    const CLASS_CLERIC = 'Cleric';
+    const CLASS_MAGE = 'Mage';
 
     public function __construct($row)
     {
@@ -23,7 +23,7 @@ class Unit extends AppModel
     public function getClass($class_id)
     {
         $db = DB::conn();
-        $class = $db->row('SELECT * FROM class WHERE id = ?', array($class_id));
+        $class = $db->row('SELECT * FROM unit_class WHERE id = ?', array($class_id));
         return new self($class);
     }
 
@@ -44,16 +44,17 @@ class Unit extends AppModel
 
     public function getAttack(array $unit)
     {
-        switch ($unit['class_id'])
+        $unit_class = $this->getClass($unit['class_id'])->name;
+        switch ($unit_class)
         {
-            case self::WARRIOR_CLASS_ID:
+            case self::CLASS_WARRIOR:
                 $unit_stats = $unit['str'];
                 break;
-            case self::ARCHER_CLASS_ID:
+            case self::CLASS_ARCHER:
                 $unit_stats = $unit['agi'];
                 break;
-            case self::CLERIC_CLASS_ID:
-            case self::MAGE_CLASS_ID:
+            case self::CLASS_CLERIC:
+            case self::CLASS_MAGE:
                 $unit_stats = $unit['int'];
                 break;
             default:
@@ -77,12 +78,6 @@ class Unit extends AppModel
 
     public function getLeaderSkill()
     {
-        $db = DB::conn();
-        $unit_leader_skill = $db->row('SELECT * FROM unit_leader_skill WHERE id = ?', array($this->unit_leader_skill_id));
-        if (!$unit_leader_skill) {
-            return false;
-        }
-        return $unit_leader_skill;
     }
 
 }
