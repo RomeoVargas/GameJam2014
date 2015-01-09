@@ -9,25 +9,25 @@ class BattleController extends AppController
         $player_units = $active_leader_skill->apply($unit_storage->getUnits(UnitStorage::IS_MAIN_UNIT));
 
         $world_info = array(
-            'world_id'      => (int) Param::get('world_id', StageSetting::FIRST_WORLD_ID),
+            'world_id'      => (int) Param::get('world', StageSetting::FIRST_WORLD_ID),
             'world_seq'     => (int) Param::get('level', StageSetting::FIRST_WORLD_SEQ)
         );
         for ($stage = StageSetting::FIRST_STAGE_PART; $stage <= StageSetting::LAST_STAGE_PART; $stage++) {
             $stage_info['stage_part'] = $stage;
             $stage_info = array_merge($world_info, $stage_info);
             $stage_setting = StageSetting::get($stage_info);
-            $enemy_units = $unit_storage->getEnemyUnits($stage_setting->id);
+            $enemy_units = $stage_setting->getEnemyUnits();
             $level_boss = null;
             $enemy_unit_leader_skill = null;
             if ($stage_setting->isLastPart()) {
-                $level_boss = $unit_storage->getEnemyUnit($stage_setting->id, $stage_setting->getLevelSetting()->level_boss_id);
+                $level_boss = $stage_setting->getEnemyUnit($stage_setting->getLevelSetting()->level_boss_id);
                 $enemy_unit_leader_skill = LeaderSkillSetting::get($level_boss->unit_leader_skill_id);
                 $enemy_units = $enemy_unit_leader_skill->apply($enemy_units);
             }
             $world_info['stages'][] = array(
                 'stage_part'            => $stage,
-                'level_boss'			=> $level_boss,
-                'enemy_leader_skill'	=> $enemy_unit_leader_skill,
+                'stage_boss_id'			=> ($level_boss) ? (int) $level_boss->id : null,
+                'stage_boss_leader_skill'	=> $enemy_unit_leader_skill,
                 'enemy_units'           => $enemy_units
             );
         }
@@ -66,6 +66,7 @@ class BattleController extends AppController
                 }
             }
         }
+        return $this;
         $this->set(get_defined_vars());
     }
 }

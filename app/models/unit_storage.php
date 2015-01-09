@@ -37,33 +37,6 @@ class UnitStorage
         return $units;
     }
 
-    public function getEnemyUnit($stage_setting_id, $unit_id)
-    {
-        $db = DB::conn();
-        $row = $db->row('SELECT * FROM enemy_plot_setting WHERE stage_setting_id = ? AND unit_id = ?', array($stage_setting_id, $unit_id));
-        $unit = new Unit($row);
-        $enemy_unit = $unit->get($row['unit_id'], $row['current_lvl']);
-        $enemy_unit->coordinates = $row['coordinates'];
-        return $enemy_unit;
-    }
-
-    public function getEnemyUnits($stage_setting_id)
-    {
-        $db = DB::conn();
-        $enemy_units = array();
-        $rows = $db->rows('SELECT * FROM enemy_plot_setting WHERE stage_setting_id = ?', array($stage_setting_id));
-        if (!$rows) {
-            return null;
-        }
-        foreach ($rows as $row) {
-            $unit = new Unit($row);
-            $enemy_unit = $unit->get($row['unit_id'], $row['current_lvl']);
-            $enemy_unit->coordinates = $row['coordinates'];
-            $enemy_units[] = $enemy_unit;
-        }
-        return $enemy_units;
-    }
-
     public function getUnitLeader()
     {
         if ($this->unit_leader) {
