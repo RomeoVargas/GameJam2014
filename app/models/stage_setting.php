@@ -46,7 +46,6 @@ class StageSetting extends AppModel
         $unit = new Unit($row);
         $enemy_unit = $unit->get($row['unit_id'], $row['current_lvl']);
         $enemy_unit->target_range = $this->convertEnemyTargetRange($enemy_unit->target_range);
-        $enemy_unit->coordinates = $row['coordinates'];
         return $enemy_unit;
     }
 
@@ -54,12 +53,14 @@ class StageSetting extends AppModel
     {
         $db = DB::conn();
         $enemy_units = array();
-        $enemies = $db->rows('SELECT unit_id FROM enemy_plot_setting WHERE stage_setting_id = ?', array($this->id));
+        $enemies = $db->rows('SELECT * FROM enemy_plot_setting WHERE stage_setting_id = ?', array($this->id));
         if (!$enemies) {
             return null;
         }
         foreach ($enemies as $enemy) {
-            $enemy_units[] = $this->getEnemyUnit($enemy['unit_id']);
+            $enemy_unit = $this->getEnemyUnit($enemy['unit_id']);
+            $enemy_unit->coordinates = $enemy['coordinates'];
+            $enemy_units[] = $enemy_unit;
         }
         return $enemy_units;
     }
